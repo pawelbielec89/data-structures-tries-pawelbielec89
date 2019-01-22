@@ -9,9 +9,7 @@ import java.util.Set;
 public class TrieDataNode {
 
     private char data;
-    //private TrieDataNode parent;
     private Set<TrieDataNode> children;
-    private String word;
 
     private TrieDataNode() {
     }
@@ -30,26 +28,26 @@ public class TrieDataNode {
         return Character.toString(data);
     }
 
-    /*public TrieDataNode getParent() {
-        return parent;
-    }
-
-    public void setParent(TrieDataNode parent) {
-        this.parent = parent;
-    }*/
-
-    public TrieDataNode getChild(char character) {
-        TrieDataNode childNode = null;
+    public boolean getIsThereChild(char character) {
         for (TrieDataNode n : children) {
             if (n.getData() == character) {
-                childNode = n;
+                return true;
             }
         }
-        return childNode;
+        return false;
     }
 
-    public void addChild(TrieDataNode newNode) {
-        children.add(newNode);
+    public TrieDataNode getChild(char character) {
+        for (TrieDataNode n : children) {
+            if (n.getData() == character) {
+                return n;
+            }
+        }
+        return null;
+    }
+
+    public void addChild(TrieDataNode newChild) {
+        children.add(newChild);
     }
 
     public void removeChild(char character) {
@@ -59,11 +57,16 @@ public class TrieDataNode {
             }
         }
     }
+
     public int getChildrenSetSize(){
         if(children.size()>0){
             return children.size();
         } else {
             return 0;
         }
+    }
+
+    public Set<TrieDataNode> getChildren(){
+        return children;
     }
 }

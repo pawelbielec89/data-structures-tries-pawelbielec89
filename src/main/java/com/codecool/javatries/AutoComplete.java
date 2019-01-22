@@ -7,9 +7,6 @@ public class AutoComplete {
 
     private TrieDataNode root;
 
-    /**
-     * Starts a new Trie with dummy root data "-"
-     */
     public AutoComplete() {
         root = new TrieDataNode('-');
     }
@@ -18,8 +15,28 @@ public class AutoComplete {
      * Adds a word to the Trie.
      */
     public void addWord(String wordToAdd) {
-        // TODO
-    }
+        String reverseWord = new StringBuilder(wordToAdd).reverse().toString();
+        TrieDataNode node = root;
+        while (reverseWord.length()>0){
+            char character = getLastLetter(reverseWord);
+            reverseWord = deleteLastLetter(reverseWord);
+            if (node.getChildrenSetSize()>0 && node.getChildren() != null){
+                if(node.getIsThereChild(character)){
+                    node = node.getChild(character);
+                } else {
+                    TrieDataNode child = new TrieDataNode(character);
+                    node.addChild(child);
+                    node = child;
+                }
+            } else {
+                TrieDataNode child = new TrieDataNode(character);
+                node.addChild(child);
+                node = child;
+
+            }
+        }
+     }
+
 
     /**
      * Returns the possible completions of baseChars String from the Trie.
@@ -43,5 +60,9 @@ public class AutoComplete {
 
     private char getLastLetter(String str){
         return str.charAt(str.length() - 1);
+    }
+
+    private String deleteLastLetter(String str){
+        return str.substring(0, str.length() - 1);
     }
 }
