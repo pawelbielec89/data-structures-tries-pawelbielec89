@@ -41,4 +41,7 @@ public class AutoComplete {
         return false;
     }
 
+    private char getLastLetter(String str){
+        return str.charAt(str.length() - 1);
+    }
 }
