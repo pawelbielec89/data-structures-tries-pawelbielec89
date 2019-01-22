@@ -9,14 +9,22 @@ import java.util.Set;
 public class TrieDataNode {
 
     private char data;
+    private TrieDataNode parent;
     private Set<TrieDataNode> children;
 
-    private TrieDataNode() {
+    public TrieDataNode() {
+        children = new HashSet<>();
     }
 
     public TrieDataNode(char data) {
-        children = new HashSet<>();
         this.data = data;
+        children = new HashSet<>();
+    }
+
+    public TrieDataNode(char data, TrieDataNode parent) {
+        this.data = data;
+        this.parent = parent;
+        children = new HashSet<>();
     }
 
     public char getData() {
@@ -68,5 +76,13 @@ public class TrieDataNode {
 
     public Set<TrieDataNode> getChildren(){
         return children;
+    }
+
+    public TrieDataNode getParent() {
+        return parent;
+    }
+
+    public void setParent(TrieDataNode parent) {
+        this.parent = parent;
     }
 }

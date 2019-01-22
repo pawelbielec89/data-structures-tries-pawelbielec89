@@ -21,6 +21,5 @@ public class Main {
         // Try to write tests to verify your code!
         System.out.println(ac.autoComplete("spectro"));
         System.out.println("done");
-        System.out.println(ac.root.getChild('b').getChildrenSetSize());
     }
 }

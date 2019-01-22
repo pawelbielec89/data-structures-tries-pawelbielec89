@@ -2,6 +2,7 @@ package com.codecool.javatries;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class AutoComplete {
 
@@ -24,17 +25,19 @@ public class AutoComplete {
                 if(node.getIsThereChild(character)){
                     node = node.getChild(character);
                 } else {
-                    TrieDataNode child = new TrieDataNode(character);
+                    TrieDataNode child = new TrieDataNode(character, node);
                     node.addChild(child);
                     node = child;
                 }
             } else {
-                TrieDataNode child = new TrieDataNode(character);
+                TrieDataNode child = new TrieDataNode(character, node);
                 node.addChild(child);
                 node = child;
-
             }
         }
+        TrieDataNode child = new TrieDataNode();
+        node.addChild(child);
+        child.setParent(node);
      }
 
 
@@ -44,8 +47,21 @@ public class AutoComplete {
      * @return possible completions. An empty list if there are none.
      */
     public List<String> autoComplete(String baseChars) {
-        List<String> words = new ArrayList<>();
-        // TODO
+
+        TrieDataNode node = root;
+        String reverseBaseChars = new StringBuilder(baseChars).reverse().toString();
+        while(reverseBaseChars.length()>0){
+            char character = getLastLetter(reverseBaseChars);
+            reverseBaseChars = deleteLastLetter(reverseBaseChars);
+            if(node.getIsThereChild(character)){
+                node = node.getChild(character);
+            }
+        }
+
+        List<String> words = traverseTrie(node); //Before adding First part
+        for(String s: words) {
+            s = baseChars + s;
+        }
         return words;
     }
 
@@ -64,5 +80,24 @@ public class AutoComplete {
 
     private String deleteLastLetter(String str){
         return str.substring(0, str.length() - 1);
+    }
+
+    private List<String> traverseTrie(TrieDataNode focusNode){
+        List<String> words = new ArrayList<>();
+        if(focusNode != null && focusNode.getChildrenSetSize()>0) {
+            for (TrieDataNode n : focusNode.getChildren()) {
+                 List<String> returnedWords = traverseTrie(n);
+                 words.addAll(returnedWords);
+            }
+        } else {
+            String word = "";
+            focusNode = focusNode.getParent();
+            while(focusNode.getData() != '-'){
+                word += focusNode.toString();
+                focusNode = focusNode.getParent();
+            }
+            words.add(new StringBuilder(word).reverse().toString());
+        }
+        return words;
     }
 }
