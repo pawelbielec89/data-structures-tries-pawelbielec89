@@ -59,4 +59,11 @@ public class TrieDataNode {
             }
         }
     }
+    public int getChildrenSetSize(){
+        if(children.size()>0){
+            return children.size();
+        } else {
+            return 0;
+        }
+    }
 }
