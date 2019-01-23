@@ -62,7 +62,8 @@ public class AutoComplete {
         for(String s: words) {
             s = baseChars + s;
         }
-        return words;
+        List<String> results = take10AlphabeticalResults(words);
+        return results;
     }
 
     /**
@@ -99,5 +100,16 @@ public class AutoComplete {
             words.add(new StringBuilder(word).reverse().toString());
         }
         return words;
+    }
+
+    private List<String> take10AlphabeticalResults(List<String> words){
+        words.sort(String.CASE_INSENSITIVE_ORDER);
+        List<String> results = new ArrayList<>();
+        int counter = 0;
+        while (results.size()<10){
+            results.add(words.get(counter));
+            counter++;
+        }
+        return results;
     }
 }
